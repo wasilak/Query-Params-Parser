@@ -1,3 +1,3 @@
-var queryParamsApp = angular.module("queryParamsApp", [], function($locationProvider) {
+var queryParamsApp = angular.module("queryParamsApp", ['ngSanitize'], function($locationProvider) {
     $locationProvider.html5Mode(true);
 });

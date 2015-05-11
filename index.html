@@ -77,16 +77,17 @@
                   </div>
               </form>
               <hr />
-              <p ng-show="mainCtrl.outputUrl.length > 0">output: <a href="{{mainCtrl.outputUrl}}" target="_blank">
-                      {{mainCtrl.outputUrl}}
-                  </a>
-
+              <p ng-show="mainCtrl.outputUrl.length > 0">output: <br />
+                <a href="{{mainCtrl.outputUrl}}" target="_blank">
+                  <span ng-bind-html="mainCtrl.outputUrlDescription"></span>
+                </a>
               </p>
           </div>
       </div>
   </div>
 
   <script src="./js/angularjs/angular.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/angularjs/angular-sanitize.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/app/app.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/app/mainController.js" type="text/javascript" charset="utf-8"></script>
 </body>
