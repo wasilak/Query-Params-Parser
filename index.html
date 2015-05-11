@@ -14,74 +14,87 @@
   <div class="container" ng-app="queryParamsApp">
       <div class="row" ng-controller="mainController as mainCtrl">
           <div class="col-sm-8 col-sm-offset-2">
-              <form>
-                  <div class="form-group">
-                      <input type="url" class="form-control" id="url" name="url" ng-model="mainCtrl.url" placeholder="enter/paste url">
-                  </div>
-              </form>
-              <p>Query params:</p>
-              <div class="table-responsive">
-                  <table class="table table-striped table-condensedq">
-                      <tr>
-                          <th>#</th>
-                          <th>name</th>
-                          <th>value</th>
-                          <th></th>
-                      </tr>
-                      <tr ng-repeat="param in mainCtrl.queryParams track by $index" ng-show="mainCtrl.queryParams.length > 0">
-                          <td>{{$index + 1}}</td>
-                          <td>
-                              <form>
-                                  <div class="form-group">
-                                      <input type="text" class="form-control" value="{{param.name}}" ng-model="mainCtrl.queryParams[$index].name" placeholder="enter param name">
-                                  </div>
-                              </form>
-                          </td>
-                          <td>
-                              <form>
-                                  <div class="form-group">
-                                      <input type="text" class="form-control" value="{{param.value}}" ng-model="mainCtrl.queryParams[$index].value" placeholder="enter param value">
-                                  </div>
-                              </form>
-                          </td>
-                          <td>
-                              <button type="button" class="btn btn-danger btn-xs btn-block" ng-click="mainCtrl.removeUrlParam($index)">X</button>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>new</td>
-                          <td>
-                              <form>
-                                  <div class="form-group">
-                                      <input type="text" class="form-control" value="{{param.name}}" ng-model="mainCtrl.newElement.name">
-                                  </div>
-                              </form>
-                          </td>
-                          <td>
-                              <form>
-                                  <div class="form-group">
-                                      <input type="text" class="form-control" value="{{param.value}}" ng-model="mainCtrl.newElement.value">
-                                  </div>
-                              </form>
-                          </td>
-                          <td>
-                              <button type="button" class="btn btn-danger btn-xs btn-block" ng-click="mainCtrl.addUrlParam()">add</button>
-                          </td>
-                      </tr>
-                  </table>
+              <div class="well">
+                <form>
+                    <div class="form-group">
+                        <input type="url" class="form-control" id="url" name="url" ng-model="mainCtrl.url" placeholder="enter/paste url">
+                    </div>
+                </form>
               </div>
-              <p>hash:</p>
-              <form>
-                  <div class="form-group">
-                      <input type="text" class="form-control" ng-model="mainCtrl.urlHash">
-                  </div>
-              </form>
-              <hr />
-              <p ng-show="mainCtrl.outputUrl.length > 0">output: <br />
-                <a href="{{mainCtrl.outputUrl}}" target="_blank">
-                  <span ng-bind-html="mainCtrl.outputUrlDescription"></span>
-                </a>
-              </p>
+
+              <div class="well">
+
+                <p>Address:</p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="mainCtrl.urlWithoutParams">
+                    </div>
+                </form>
+                <p>Query params:</p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensedq">
+                        <tr>
+                            <th>#</th>
+                            <th>name</th>
+                            <th>value</th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="param in mainCtrl.queryParams track by $index" ng-show="mainCtrl.queryParams.length > 0">
+                            <td>{{$index + 1}}</td>
+                            <td>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{param.name}}" ng-model="mainCtrl.queryParams[$index].name" placeholder="enter param name">
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{param.value}}" ng-model="mainCtrl.queryParams[$index].value" placeholder="enter param value">
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-xs btn-block" ng-click="mainCtrl.removeUrlParam($index)">X</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>new</td>
+                            <td>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{param.name}}" ng-model="mainCtrl.newElement.name">
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{param.value}}" ng-model="mainCtrl.newElement.value">
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-xs btn-block" ng-click="mainCtrl.addUrlParam()">add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p>hash:</p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="mainCtrl.urlHash">
+                    </div>
+                </form>
+              </div>
+              <div class="well">
+                <p ng-show="mainCtrl.outputUrl.length > 0">output: <br />
+                  <a href="{{mainCtrl.outputUrl}}" target="_blank">
+                    <span ng-bind-html="mainCtrl.outputUrlDescription"></span>
+                  </a>
+                </p>
+              </div>
           </div>
       </div>
   </div>

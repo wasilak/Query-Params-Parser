@@ -103,4 +103,8 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', func
     $scope.$watch('mainCtrl.queryParams', function() {
         updateOutpuUrl();
     }, true);
+
+    $scope.$watch('mainCtrl.urlWithoutParams', function() {
+        updateOutpuUrl();
+    }, true);
 }]);
