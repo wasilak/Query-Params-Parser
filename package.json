@@ -1,0 +1,12 @@
+{
+  "name": "Test",
+  "version": "1.0.0",
+  "dependencies": {
+    "gulp": "*",
+    "gulp-util": "*",
+    "gulp-rename": "*",
+    "map-stream": "*",
+    "gulp-livereload": "*",
+    "gulp-watch": "*"
+  }
+}
