@@ -1,4 +1,4 @@
-queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', function($scope, $location, $sce) {
+queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'utilsService', function($scope, $location, $sce, utilsService) {
     var mainCtrl =this;
 
     mainCtrl.url = 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=';
@@ -28,46 +28,6 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', func
         }
     };
 
-    var paramsStringToArray = function(paramsString) {
-        if (paramsString.length > 0) {
-                paramsString = paramsString.split("&");
-                var paramsArray = [];
-                for (paramId in paramsString) {
-                    var tmp = paramsString[paramId].split('=');
-                    paramsArray.push({
-                        'name': tmp[0],
-                        'value': tmp[1]
-                    });
-                }
-
-            mainCtrl.queryParams = paramsArray;
-            mainCtrl.urlWithoutParams = mainCtrl.rawUrl.origin + mainCtrl.rawUrl.pathname;
-        }
-    };
-
-    var paramsArrayToString = function() {
-        if (mainCtrl.url.length > 0 && mainCtrl.queryParams.length > 0) {
-            var tmp = [], tmpDesc = [];
-            for (paramId in mainCtrl.queryParams) {
-                var tmpParam = mainCtrl.queryParams[paramId];
-                tmp.push(tmpParam.name + '=' + tmpParam.value);
-                tmpDesc.push('<span style="color: ' + getRandomColor() + ';">' + tmpParam.name + '=' + tmpParam.value + '</span>');
-            }
-
-            mainCtrl.outputUrl = mainCtrl.urlWithoutParams + '?' + tmp.join('&');
-            mainCtrl.outputUrlDescription = $sce.trustAsHtml(mainCtrl.urlWithoutParams + '?' + tmpDesc.join('&'));
-        }
-    }
-
-    var getRandomColor = function() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
     $scope.$watch('mainCtrl.url', function() {
 
         // reset
@@ -81,7 +41,8 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', func
             mainCtrl.urlHash = mainCtrl.rawUrl.hash.substr(1);
         }
 
-        paramsStringToArray(mainCtrl.rawUrl.search.substr(1));
+        mainCtrl.queryParams = utilsService.paramsStringToArray(mainCtrl.rawUrl.search.substr(1));
+        mainCtrl.urlWithoutParams = mainCtrl.rawUrl.origin + mainCtrl.rawUrl.pathname;
 
         updateOutpuUrl();
     });
@@ -89,7 +50,11 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', func
     var updateOutpuUrl = function() {
         mainCtrl.outputUrl = '';
         
-        paramsArrayToString();
+        if (mainCtrl.url.length > 0 && mainCtrl.queryParams.length > 0) {
+            var tmp = utilsService.paramsArrayToString(mainCtrl.queryParams);
+            mainCtrl.outputUrl = mainCtrl.urlWithoutParams + '?' + tmp.val;
+            mainCtrl.outputUrlDescription = $sce.trustAsHtml(mainCtrl.urlWithoutParams + '?' + tmp.desc);
+        }
 
         if (mainCtrl.urlHash.length > 0) {
             mainCtrl.outputUrl = mainCtrl.outputUrl + '#' + mainCtrl.urlHash;
