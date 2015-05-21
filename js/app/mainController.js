@@ -1,75 +1,90 @@
 queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'utilsService', function($scope, $location, $sce, utilsService) {
     var mainCtrl =this;
 
-    mainCtrl.url = 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=';
-    mainCtrl.urlWithoutParams = '';
-    mainCtrl.outputUrl = '';
-    mainCtrl.outputUrlDescription = '';
-    mainCtrl.rawUrl = '';
-    mainCtrl.queryParams = [];
-    mainCtrl.newElement = {
-        'name': '',
-        'value': ''
+    mainCtrl.input = 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=';
+    mainCtrl.output = {
+        url: '',
+        description: ''
     };
-    mainCtrl.urlHash = '';
+    
+    // our custom URL model
+    // TODO: will be replaced with model prefilled with AJAX etc.
+    mainCtrl.urlModel = {
+        url: 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=',
+        rawUrl: new URL(mainCtrl.input),
+        urlWithoutParams: '',
+        queryParams: [],
+        urlHash: '',
+        newElement: {
+            'name': '',
+            'value': ''
+        },
+        
+        removeUrlParam: function(id) {
+            this.queryParams.splice(id, 1);
+        },
 
-    mainCtrl.removeUrlParam = function(id) {
-        mainCtrl.queryParams.splice(id, 1);
-    };
+        addUrlParam: function() {
+            if (this.newElement.name.length > 0) {
+                this.queryParams.push(this.newElement);
+                this.newElement = {
+                    'name': '',
+                    'value': ''
+                };
+            }
+        },
 
+        reset: function() {
+            this.queryParams = [];
+            this.urlWithoutParams = '';
+        },
 
-    mainCtrl.addUrlParam = function() {
-        if (mainCtrl.newElement.name.length > 0) {
-            mainCtrl.queryParams.push(mainCtrl.newElement);
-            mainCtrl.newElement = {
-                'name': '',
-                'value': ''
-            };
+        addHash: function() {
+            if (this.urlHash.length > 0) {
+                return '#' + this.urlHash;
+            }
+
+            return '';
         }
     };
 
-    $scope.$watch('mainCtrl.url', function() {
+    $scope.$watch('mainCtrl.input', function() {
 
         // reset
-        mainCtrl.queryParams = [];
-        mainCtrl.urlWithoutParams = '';
+        mainCtrl.urlModel.reset();
 
-        mainCtrl.rawUrl = new URL(mainCtrl.url);
+        mainCtrl.urlModel.rawUrl = new URL(mainCtrl.input);
 
-        mainCtrl.urlHash = '';
-        if (mainCtrl.rawUrl.hash.length > 0) {
-            mainCtrl.urlHash = mainCtrl.rawUrl.hash.substr(1);
+        mainCtrl.urlModel.urlHash = '';
+        if (mainCtrl.urlModel.rawUrl.hash.length > 0) {
+            mainCtrl.urlModel.urlHash = mainCtrl.urlModel.rawUrl.hash.substr(1);
         }
 
-        mainCtrl.queryParams = utilsService.paramsStringToArray(mainCtrl.rawUrl.search.substr(1));
-        mainCtrl.urlWithoutParams = mainCtrl.rawUrl.origin + mainCtrl.rawUrl.pathname;
+        mainCtrl.urlModel.queryParams = utilsService.paramsStringToArray(mainCtrl.urlModel.rawUrl.search.substr(1));
+        mainCtrl.urlModel.urlWithoutParams = mainCtrl.urlModel.rawUrl.origin + mainCtrl.urlModel.rawUrl.pathname;
 
         updateOutpuUrl();
     });
 
     var updateOutpuUrl = function() {
-        mainCtrl.outputUrl = '';
+        mainCtrl.output.url = '';
         
-        if (mainCtrl.url.length > 0 && mainCtrl.queryParams.length > 0) {
-            var tmp = utilsService.paramsArrayToString(mainCtrl.queryParams);
-            mainCtrl.outputUrl = mainCtrl.urlWithoutParams + '?' + tmp.val;
-            mainCtrl.outputUrlDescription = $sce.trustAsHtml(mainCtrl.urlWithoutParams + '?' + tmp.desc);
-        }
-
-        if (mainCtrl.urlHash.length > 0) {
-            mainCtrl.outputUrl = mainCtrl.outputUrl + '#' + mainCtrl.urlHash;
+        if (mainCtrl.input.length > 0 && mainCtrl.urlModel.queryParams.length > 0) {
+            var tmp = utilsService.paramsArrayToString(mainCtrl.urlModel.queryParams);
+            mainCtrl.output.url = mainCtrl.urlModel.urlWithoutParams + '?' + tmp.val + mainCtrl.urlModel.addHash();
+            mainCtrl.output.description = $sce.trustAsHtml(mainCtrl.urlModel.urlWithoutParams + '?' + tmp.desc + mainCtrl.urlModel.addHash());
         }
     }
 
-    $scope.$watch('mainCtrl.urlHash', function() {
-        updateOutpuUrl();
-    });
+    // $scope.$watch('mainCtrl.urlModel.urlHash', function() {
+    //     updateOutpuUrl();
+    // });
 
-    $scope.$watch('mainCtrl.queryParams', function() {
-        updateOutpuUrl();
-    }, true);
+    // $scope.$watch('mainCtrl.urlModel.queryParams', function() {
+    //     updateOutpuUrl();
+    // }, true);
 
-    $scope.$watch('mainCtrl.urlWithoutParams', function() {
+    $scope.$watch('mainCtrl.urlModel', function() {
         updateOutpuUrl();
     }, true);
 }]);
