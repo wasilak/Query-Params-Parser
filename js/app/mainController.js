@@ -6,7 +6,7 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'uti
         url: '',
         description: ''
     };
-    
+
     // our custom URL model
     // TODO: will be replaced with model prefilled with AJAX etc.
     mainCtrl.urlModel = {
@@ -19,7 +19,7 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'uti
             'name': '',
             'value': ''
         },
-        
+
         removeUrlParam: function(id) {
             this.queryParams.splice(id, 1);
         },
@@ -68,23 +68,20 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'uti
 
     var updateOutpuUrl = function() {
         mainCtrl.output.url = '';
-        
+
         if (mainCtrl.input.length > 0 && mainCtrl.urlModel.queryParams.length > 0) {
             var tmp = utilsService.paramsArrayToString(mainCtrl.urlModel.queryParams);
             mainCtrl.output.url = mainCtrl.urlModel.urlWithoutParams + '?' + tmp.val + mainCtrl.urlModel.addHash();
             mainCtrl.output.description = $sce.trustAsHtml(mainCtrl.urlModel.urlWithoutParams + '?' + tmp.desc + mainCtrl.urlModel.addHash());
         }
-    }
+    };
 
-    // $scope.$watch('mainCtrl.urlModel.urlHash', function() {
-    //     updateOutpuUrl();
-    // });
+    $scope.$watch('mainCtrl.urlModel.urlHash', function() {
+        updateOutpuUrl();
+    });
 
-    // $scope.$watch('mainCtrl.urlModel.queryParams', function() {
-    //     updateOutpuUrl();
-    // }, true);
-
-    $scope.$watch('mainCtrl.urlModel', function() {
+    $scope.$watch('mainCtrl.urlModel.queryParams', function() {
         updateOutpuUrl();
     }, true);
+
 }]);
