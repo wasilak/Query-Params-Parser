@@ -2,11 +2,13 @@
   "name": "Test",
   "version": "1.0.0",
   "dependencies": {
+    "express": "^4.12.4",
     "gulp": "*",
-    "gulp-util": "*",
-    "gulp-rename": "*",
-    "map-stream": "*",
     "gulp-livereload": "*",
-    "gulp-watch": "*"
+    "gulp-rename": "*",
+    "gulp-util": "*",
+    "gulp-watch": "*",
+    "map-stream": "*",
+    "morgan": "^1.5.3"
   }
 }
