@@ -1,7 +1,7 @@
-queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'utilsService', function($scope, $location, $sce, utilsService) {
+queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'utilsService', '$http', function($scope, $location, $sce, utilsService, $http) {
     var mainCtrl =this;
 
-    mainCtrl.input = 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=';
+    mainCtrl.input = '';
     mainCtrl.output = {
         url: '',
         description: ''
@@ -10,8 +10,7 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'uti
     // our custom URL model
     // TODO: will be replaced with model prefilled with AJAX etc.
     mainCtrl.urlModel = {
-        url: 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=',
-        rawUrl: new URL(mainCtrl.input),
+        rawUrl: new URL(''),
         urlWithoutParams: '',
         queryParams: [],
         urlHash: '',
@@ -47,6 +46,11 @@ queryParamsApp.controller("mainController", ['$scope', '$location', '$sce', 'uti
             return '';
         }
     };
+
+    $http.get('/api/get/dsad32423fw').success(function(data) {
+        var urlFromDB = new URL(data.url);
+        mainCtrl.input = urlFromDB.href;
+    });
 
     $scope.$watch('mainCtrl.input', function() {
 
