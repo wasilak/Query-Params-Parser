@@ -15,7 +15,7 @@ var app = express();
 app.use(morgan('dev'));
 
 // path to static assets (CSS etc.)
-app.use(express.static('public'));  
+app.use(express.static('public'));
 
 app.get('/api/get/:hash', function(req, res) {
 
@@ -35,14 +35,14 @@ app.get('/api/get/:hash', function(req, res) {
         res.json({
             error: true,
             message: 'hash not found'
-        })
+        });
     }
 });
 
 // catching all routes with single page AngularJS app.
 // AngularJS will take care of the routing.
 app.get('*', function(req, res) {
-     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+     res.sendFile(path.join(__dirname, 'public', 'layout.html'));
 });
 
 // server init on custom port
