@@ -74,12 +74,13 @@
                     </div>
                 </form>
               </div>
-              <div class="well">
-                <p ng-show="mainCtrl.output.url.length > 0">output: <br />
+              <div class="well" ng-show="mainCtrl.output.url.length > 0">
+                <p>output: <br />
                   <a href="{{mainCtrl.output.url}}" target="_blank">
                     <span ng-bind-html="mainCtrl.output.description"></span>
                   </a>
                 </p>
+                <button class="btn btn-fab btn-raised btn-fab-mini btn-material-lime"><i class="mdi-navigation-arrow-forward"></i><div class="ripple-wrapper"></div></button>
               </div>
           </div>
       </div>

@@ -10,6 +10,7 @@ queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'uti
     // our custom URL model
     // TODO: will be replaced with model prefilled with AJAX etc.
     mainCtrl.urlModel = {
+        hash: '',
         rawUrl: new URL(''),
         urlWithoutParams: '',
         queryParams: [],
@@ -47,8 +48,10 @@ queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'uti
         }
     };
 
-    if ($routeParams.hash) {
-        $http.get('/api/get/' + $routeParams.hash).success(function(data) {
+    mainCtrl.urlModel.hash = $routeParams.hash;
+
+    if (mainCtrl.urlModel.hash) {
+        $http.get('/api/get/' + mainCtrl.urlModel.hash).success(function(data) {
             if (!data.error) {
                 var urlFromDB = new URL(data.url);
                 mainCtrl.input = urlFromDB.href;
@@ -58,15 +61,34 @@ queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'uti
         });
     }
 
+    var updateOutpuUrl = function() {
+        mainCtrl.output.url = '';
+
+        if (!mainCtrl.urlModel.queryParams) {
+            mainCtrl.urlModel.queryParams = [];
+        }
+
+        if (mainCtrl.urlModel.rawUrl.href.length > 0 && mainCtrl.urlModel.queryParams.length > 0) {
+
+            var tmp = utilsService.paramsArrayToString(mainCtrl.urlModel.queryParams);
+            mainCtrl.output.url = mainCtrl.urlModel.urlWithoutParams + '?' + tmp.val + mainCtrl.urlModel.addHash();
+            mainCtrl.output.description = $sce.trustAsHtml(mainCtrl.urlModel.urlWithoutParams + '?' + tmp.desc + mainCtrl.urlModel.addHash());
+        }
+    };
+
     $scope.$watch('mainCtrl.input', function() {
 
         // reset
-        mainCtrl.urlModel.reset();
+        // mainCtrl.urlModel.reset();
 
-        mainCtrl.urlModel.rawUrl = new URL(mainCtrl.input);
-
+        mainCtrl.urlModel.rawUrl = new URL('');
+        try {
+            mainCtrl.urlModel.rawUrl = new URL(mainCtrl.input);
+        } catch (error) {
+        }
+// console.log(mainCtrl.urlModel.rawUrl.href);
         mainCtrl.urlModel.urlHash = '';
-        if (mainCtrl.urlModel.rawUrl.hash.length > 0) {
+        if (mainCtrl.urlModel.rawUrl.hash && mainCtrl.urlModel.rawUrl.hash.length > 0) {
             mainCtrl.urlModel.urlHash = mainCtrl.urlModel.rawUrl.hash.substr(1);
         }
 
@@ -75,16 +97,6 @@ queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'uti
 
         updateOutpuUrl();
     });
-
-    var updateOutpuUrl = function() {
-        mainCtrl.output.url = '';
-
-        if (mainCtrl.input.length > 0 && mainCtrl.urlModel.queryParams.length > 0) {
-            var tmp = utilsService.paramsArrayToString(mainCtrl.urlModel.queryParams);
-            mainCtrl.output.url = mainCtrl.urlModel.urlWithoutParams + '?' + tmp.val + mainCtrl.urlModel.addHash();
-            mainCtrl.output.description = $sce.trustAsHtml(mainCtrl.urlModel.urlWithoutParams + '?' + tmp.desc + mainCtrl.urlModel.addHash());
-        }
-    };
 
     $scope.$watch('mainCtrl.urlModel.urlHash', function() {
         updateOutpuUrl();

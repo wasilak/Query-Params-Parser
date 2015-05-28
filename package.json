@@ -8,6 +8,7 @@
     "gulp-rename": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
+    "locallydb": "0.0.9",
     "map-stream": "*",
     "morgan": "^1.5.3"
   }
