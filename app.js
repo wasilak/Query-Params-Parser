@@ -17,6 +17,9 @@ app.use(morgan('dev'));
 // path to static assets (CSS etc.)
 app.use(express.static('public'));
 
+// AngularJS views
+// app.use(express.static('public/app/views'));
+
 app.get('/api/get/:hash', function(req, res) {
 
     var hash = req.params.hash;

@@ -1,4 +1,4 @@
-queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'utilsService', '$http', function($scope, $location, $sce, utilsService, $http) {
+queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'utilsService', '$http','$routeParams', function($scope, $location, $sce, utilsService, $http, $routeParams) {
     var mainCtrl =this;
 
     mainCtrl.input = '';
@@ -47,10 +47,16 @@ queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'uti
         }
     };
 
-    $http.get('/api/get/dsad32423fw').success(function(data) {
-        var urlFromDB = new URL(data.url);
-        mainCtrl.input = urlFromDB.href;
-    });
+    if ($routeParams.hash) {
+        $http.get('/api/get/' + $routeParams.hash).success(function(data) {
+            if (!data.error) {
+                var urlFromDB = new URL(data.url);
+                mainCtrl.input = urlFromDB.href;
+            } else {
+                console.log(data);
+            }
+        });
+    }
 
     $scope.$watch('mainCtrl.input', function() {
 
