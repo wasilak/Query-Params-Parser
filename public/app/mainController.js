@@ -1,109 +1,29 @@
-queryParamsApp.controller("MainController", ['$scope', '$location', '$sce', 'utilsService', '$http','$routeParams', function($scope, $location, $sce, utilsService, $http, $routeParams) {
+queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel', function($scope, $routeParams,urlModel) {
     var mainCtrl =this;
 
-    mainCtrl.input = '';
-    mainCtrl.output = {
-        url: '',
-        description: ''
-    };
+    mainCtrl.urlModel = urlModel;
 
-    // our custom URL model
-    // TODO: will be replaced with model prefilled with AJAX etc.
-    mainCtrl.urlModel = {
-        hash: '',
-        rawUrl: new URL(''),
-        urlWithoutParams: '',
-        queryParams: [],
-        urlHash: '',
-        newElement: {
-            'name': '',
-            'value': ''
-        },
+    // getting saved URL hash from request
+    mainCtrl.urlModel.getFromDB($routeParams.hash);
 
-        removeUrlParam: function(id) {
-            this.queryParams.splice(id, 1);
-        },
-
-        addUrlParam: function() {
-            if (this.newElement.name.length > 0) {
-                this.queryParams.push(this.newElement);
-                this.newElement = {
-                    'name': '',
-                    'value': ''
-                };
-            }
-        },
-
-        reset: function() {
-            this.queryParams = [];
-            this.urlWithoutParams = '';
-        },
-
-        addHash: function() {
-            if (this.urlHash.length > 0) {
-                return '#' + this.urlHash;
-            }
-
-            return '';
-        }
-    };
-
-    mainCtrl.urlModel.hash = $routeParams.hash;
-
-    if (mainCtrl.urlModel.hash) {
-        $http.get('/api/get/' + mainCtrl.urlModel.hash).success(function(data) {
-            if (!data.error) {
-                var urlFromDB = new URL(data.url);
-                mainCtrl.input = urlFromDB.href;
-            } else {
-                console.log(data);
-            }
-        });
-    }
-
-    var updateOutpuUrl = function() {
-        mainCtrl.output.url = '';
-
-        if (!mainCtrl.urlModel.queryParams) {
-            mainCtrl.urlModel.queryParams = [];
-        }
-
-        if (mainCtrl.urlModel.rawUrl.href.length > 0 && mainCtrl.urlModel.queryParams.length > 0) {
-
-            var tmp = utilsService.paramsArrayToString(mainCtrl.urlModel.queryParams);
-            mainCtrl.output.url = mainCtrl.urlModel.urlWithoutParams + '?' + tmp.val + mainCtrl.urlModel.addHash();
-            mainCtrl.output.description = $sce.trustAsHtml(mainCtrl.urlModel.urlWithoutParams + '?' + tmp.desc + mainCtrl.urlModel.addHash());
-        }
-    };
-
-    $scope.$watch('mainCtrl.input', function() {
-
-        // reset
-        // mainCtrl.urlModel.reset();
-
-        mainCtrl.urlModel.rawUrl = new URL('');
-        try {
-            mainCtrl.urlModel.rawUrl = new URL(mainCtrl.input);
-        } catch (error) {
-        }
-// console.log(mainCtrl.urlModel.rawUrl.href);
-        mainCtrl.urlModel.urlHash = '';
-        if (mainCtrl.urlModel.rawUrl.hash && mainCtrl.urlModel.rawUrl.hash.length > 0) {
-            mainCtrl.urlModel.urlHash = mainCtrl.urlModel.rawUrl.hash.substr(1);
-        }
-
-        mainCtrl.urlModel.queryParams = utilsService.paramsStringToArray(mainCtrl.urlModel.rawUrl.search.substr(1));
-        mainCtrl.urlModel.urlWithoutParams = mainCtrl.urlModel.rawUrl.origin + mainCtrl.urlModel.rawUrl.pathname;
-
-        updateOutpuUrl();
+    // watching input field
+    $scope.$watch('mainCtrl.urlModel.input', function() {
+        mainCtrl.urlModel.setRawUrl();
     });
 
+    // watching url/host field
+    $scope.$watch('mainCtrl.urlModel.urlWithoutParams', function() {
+        mainCtrl.urlModel.setOutputUrl();
+    });
+
+    // watching URL hash field
     $scope.$watch('mainCtrl.urlModel.urlHash', function() {
-        updateOutpuUrl();
+        mainCtrl.urlModel.setOutputUrl();
     });
 
+    // watching query params field
     $scope.$watch('mainCtrl.urlModel.queryParams', function() {
-        updateOutpuUrl();
+        mainCtrl.urlModel.setOutputUrl();
     }, true);
 
 }]);

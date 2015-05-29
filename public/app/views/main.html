@@ -3,15 +3,15 @@
               <div class="well">
                 <form>
                     <div class="form-group">
-                        <input type="url" class="form-control" id="url" name="url" ng-model="mainCtrl.input" placeholder="enter/paste url">
+                        <input type="url" class="form-control" id="url" name="url" ng-model="mainCtrl.urlModel.input" placeholder="enter/paste url">
                     </div>
                 </form>
               </div>
 
               <div class="well">
 
-                <p>Address:</p>
-                <form>
+                <p ng-show="mainCtrl.urlModel.urlWithoutParams.length > 0">Address:</p>
+                <form ng-show="mainCtrl.urlModel.urlWithoutParams.length > 0">
                     <div class="form-group">
                         <input type="text" class="form-control" ng-model="mainCtrl.urlModel.urlWithoutParams">
                     </div>
@@ -74,10 +74,10 @@
                     </div>
                 </form>
               </div>
-              <div class="well" ng-show="mainCtrl.output.url.length > 0">
+              <div class="well" ng-show="mainCtrl.urlModel.output.url.length > 0">
                 <p>output: <br />
-                  <a href="{{mainCtrl.output.url}}" target="_blank">
-                    <span ng-bind-html="mainCtrl.output.description"></span>
+                  <a href="{{mainCtrl.urlModel.output.url}}" target="_blank">
+                    <span ng-bind-html="mainCtrl.urlModel.output.description"></span>
                   </a>
                 </p>
                 <button class="btn btn-fab btn-raised btn-fab-mini btn-material-lime"><i class="mdi-navigation-arrow-forward"></i><div class="ripple-wrapper"></div></button>

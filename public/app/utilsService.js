@@ -1,45 +1,55 @@
 queryParamsApp.factory('utilsService', function() {
 
-    var serviceData = {};
+    var serviceData = {
+        getRandomColor: function() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        },
 
-    serviceData.getRandomColor = function() {
-        var letters = '0123456789ABCDEF'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++ ) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+        paramsStringToArray: function(paramsString) {
+            if (paramsString.length > 0) {
+                    paramsString = paramsString.split("&");
+                    var paramsArray = [];
+                    for (var paramId in paramsString) {
+                        var tmp = paramsString[paramId].split('=');
+                        paramsArray.push({
+                            'name': tmp[0],
+                            'value': tmp[1]
+                        });
+                    }
 
-    serviceData.paramsStringToArray = function(paramsString) {
-        if (paramsString.length > 0) {
-                paramsString = paramsString.split("&");
-                var paramsArray = [];
-                for (paramId in paramsString) {
-                    var tmp = paramsString[paramId].split('=');
-                    paramsArray.push({
-                        'name': tmp[0],
-                        'value': tmp[1]
-                    });
-                }
+                return paramsArray;
+            }
+        },
 
-            return paramsArray;
+        paramsArrayToString: function(queryParams) {
+            var tmp = [], tmpDesc = [];
+            for (var paramId in queryParams) {
+                var tmpParam = queryParams[paramId];
+                tmp.push(tmpParam.name + '=' + tmpParam.value);
+                tmpDesc.push('<span style="color: ' + serviceData.getRandomColor() + ';">' + tmpParam.name + '=' + tmpParam.value + '</span>');
+            }
+
+            var tmpString = '';
+            if (tmp.length > 0) {
+                tmpString = '?' + tmp.join('&');
+            }
+
+            var tmpStringDesc = '';
+            if (tmpDesc.length > 0) {
+                tmpStringDesc = '?' + tmpDesc.join('&');
+            }
+
+            return {
+                val: tmpString,
+                desc: tmpStringDesc
+            };
         }
     };
-
-    serviceData.paramsArrayToString = function(queryParams) {
-        var tmp = [], tmpDesc = [];
-        for (paramId in queryParams) {
-            var tmpParam = queryParams[paramId];
-            tmp.push(tmpParam.name + '=' + tmpParam.value);
-            tmpDesc.push('<span style="color: ' + serviceData.getRandomColor() + ';">' + tmpParam.name + '=' + tmpParam.value + '</span>');
-        }
-
-        return {
-            val: tmp.join('&'),
-            desc: tmpDesc.join('&')
-        };
-    }
 
     return serviceData;
 });
