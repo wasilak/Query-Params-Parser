@@ -14,6 +14,11 @@ var port = 3000;
 
 // load the database (folder) in './mydb', will be created if doesn't exist 
 var db = new locallydb('./db');
+var collection = db.collection('urls');
+
+// YT like hash IDs
+var hashids = require("hashids"),
+hashids = new hashids("dsiajh@#@d7847$$%%6238kjdbicu", 6);
 
 var app = express();
 
@@ -26,27 +31,61 @@ app.use(express.static('public'));
 // AngularJS views
 // app.use(express.static('public/app/views'));
 
+app.post('/api/save/:url/:hash', function(req, res) {
+  var url = req.params.url;
+  var hash = req.params.hash;
+
+  console.log(url, hash);
+
+  if ('undefined' !== hash) {
+    console.log("update");
+    var decodedHashId = hashids.decode(hash);
+    decodedHashId = decodedHashId[0];
+
+    var data = collection.get(decodedHashId);
+
+    if (data) {
+      collection.update(decodedHashId, {url: url});
+
+      res.json({
+          error: false,
+          type: 'update',
+          message: 'update successfull',
+          hash: hashids.encode(data.cid)
+      });
+    } else {
+      res.json({
+          error: true,
+          type: 'update',
+          message: 'update failed. HashID does not exists...'
+      });
+    }
+  } else {
+    console.log("insert");
+    var newID = collection.insert({
+        url: url
+    });
+
+    res.json({
+        error: false,
+        type: 'insert',
+        message: 'insert successfull',
+        hash: hashids.encode(newID)
+    });
+  }
+});
+
 app.get('/api/get/:hash', function(req, res) {
 
     var hash = req.params.hash;
 
-    var collection = db.collection('urls');
-// collection.insert({
-//             hash: 'test123',
-//             url: 'http://wasil.org/?aaaa=bbbb&ccc=dddd#eeee'
-//         });
-    // var data = {
-    //     'dsad32423fw': {
-    //         hash: 'dsad32423fw',
-    //         url: 'http://local.stepstone.de/m/?event=OfferView&wt=&we=&id=2676705&pos=0&zc=&loc=#afdasas'
-    //     }
-    // };
-    
     // here get data from DB etc.
-    var data = collection.where({hash: hash});
-console.log(data);
-    if (data.length() >= 1) {
-        res.json(data.items[0]);
+    // decoding HashID returns array, so we need first element
+    var decodedHashId = hashids.decode(hash);
+    var data = collection.get(decodedHashId[0]);
+
+    if (data) {
+        res.json(data);
     } else {
         res.json({
             error: true,

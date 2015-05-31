@@ -1,7 +1,7 @@
 /**
 * URL model, handling all data related logic and using Utils service
 */
-queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', function($http, utilsService, $sce) {
+queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location', function($http, utilsService, $sce, $location) {
 
     var urlModel = {
         input: '',
@@ -55,6 +55,28 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', function($h
                     }
                 });
             }
+        },
+
+        saveToDB: function() {
+          var me = this;
+
+          url = false;
+          try {
+            url = new URL(this.output.url);
+          } catch(error) {
+            console.log('Invalid URL...');
+          }
+
+          if (url) {
+              console.log(url.href);
+              $http.post('/api/save/' + encodeURIComponent(url.href) + '/' + this.hash).success(function(data) {
+                console.log(data);
+
+                if (data.error === false && 'insert' === data.type) {
+                   $location.path('/' + data.hash);
+                }
+              });
+          }
         },
 
         setRawUrl: function() {
