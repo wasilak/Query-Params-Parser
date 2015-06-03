@@ -10,8 +10,6 @@ var path = require('path');
 // load locallydb
 var locallydb = require('locallydb');
 
-app.set('port', (process.env.PORT || 3000));
-
 // load the database (folder) in './mydb', will be created if doesn't exist 
 var db = new locallydb('./db');
 var collection = db.collection('urls');
@@ -21,6 +19,7 @@ var hashids = require("hashids"),
 hashids = new hashids("dsiajh@#@d7847$$%%6238kjdbicu", 6);
 
 var app = express();
+app.set('port', (process.env.PORT || 3000));
 
 // logging to console
 app.use(morgan('dev'));
@@ -101,7 +100,7 @@ app.get('*', function(req, res) {
 });
 
 // server init on custom port
-var server = app.listen(app.set('port'), function() {
+var server = app.listen(app.get('port'), function() {
     var host = server.address().address;
     var port = server.address().port;
 
