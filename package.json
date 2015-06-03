@@ -1,6 +1,13 @@
 {
   "name": "Test",
-  "version": "1.0.0",
+  "version": "0.0.2",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
   "dependencies": {
     "express": "^4.12.4",
     "gulp": "*",
