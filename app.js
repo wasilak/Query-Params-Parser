@@ -10,7 +10,7 @@ var path = require('path');
 // load locallydb
 var locallydb = require('locallydb');
 
-var port = 3000;
+app.set('port', (process.env.PORT || 3000));
 
 // load the database (folder) in './mydb', will be created if doesn't exist 
 var db = new locallydb('./db');
@@ -101,7 +101,7 @@ app.get('*', function(req, res) {
 });
 
 // server init on custom port
-var server = app.listen(port, function() {
+var server = app.listen(app.set('port'), function() {
     var host = server.address().address;
     var port = server.address().port;
 
