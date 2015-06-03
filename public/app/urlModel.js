@@ -18,6 +18,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             'name': '',
             'value': ''
         },
+        encodeURI: true,
 
         removeUrlParam: function(id) {
             this.queryParams.splice(id, 1);
@@ -68,7 +69,6 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
           }
 
           if (url) {
-              console.log(url.href);
               $http.post('/api/save/' + encodeURIComponent(url.href) + '/' + this.hash).success(function(data) {
                 console.log(data);
 
@@ -103,11 +103,24 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
 
         setOutputUrl: function() {
             this.output.url = '';
-
             if ('null' != this.rawUrl.origin) {
+
                 var tmp = utilsService.paramsArrayToString(this.queryParams);
                 this.output.url = this.urlWithoutParams + tmp.val + this.addHash();
                 this.output.description = $sce.trustAsHtml(this.urlWithoutParams + tmp.desc + this.addHash());
+            }
+        },
+
+        setEncoding: function() {
+
+            this.encodeDecodeParams();
+            utilsService.encodeURI = this.encodeURI;
+        },
+
+        encodeDecodeParams: function() {
+
+            for (var id in this.queryParams) {
+                this.queryParams[id].value = utilsService.encodeURI ? decodeURIComponent(this.queryParams[id].value) : encodeURIComponent(this.queryParams[id].value);
             }
         }
     };

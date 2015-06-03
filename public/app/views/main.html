@@ -8,6 +8,15 @@
                 </form>
               </div>
 
+              <div class="well" ng-show="mainCtrl.urlModel.urlWithoutParams.length > 0">
+                  <!-- <input class="pull-right" type="checkbox" ng-model="mainCtrl.urlModel.encodeURI"> -->
+                  <div class="checkbox">
+                    <label>
+                      encoding <input type="checkbox" ng-model="mainCtrl.urlModel.encodeURI"><span class="checkbox-material"><span class="check"></span></span>
+                    </label>
+                  </div>
+              </div>
+
               <div class="well">
 
                 <p ng-show="mainCtrl.urlModel.urlWithoutParams.length > 0">Address:</p>
@@ -16,7 +25,10 @@
                         <input type="text" class="form-control" ng-model="mainCtrl.urlModel.urlWithoutParams">
                     </div>
                 </form>
-                <p>Query params:</p>
+                
+                <p>
+                    Query params:
+                </p>
                 <div class="table-responsive">
                     <table class="table table-striped table-condensedq">
                         <tr>

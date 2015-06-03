@@ -21,6 +21,11 @@ queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel
         mainCtrl.urlModel.setOutputUrl();
     });
 
+    // watching query params encode checkbox
+    $scope.$watch('mainCtrl.urlModel.encodeURI', function() {
+        mainCtrl.urlModel.setEncoding();
+    });
+
     // watching query params field
     $scope.$watch('mainCtrl.urlModel.queryParams', function() {
         mainCtrl.urlModel.setOutputUrl();

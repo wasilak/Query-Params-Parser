@@ -1,6 +1,7 @@
 queryParamsApp.factory('utilsService', function() {
 
     var serviceData = {
+        encodeURI: true,
         getRandomColor: function() {
             var letters = '0123456789ABCDEF'.split('');
             var color = '#';
@@ -30,8 +31,13 @@ queryParamsApp.factory('utilsService', function() {
             var tmp = [], tmpDesc = [];
             for (var paramId in queryParams) {
                 var tmpParam = queryParams[paramId];
-                tmp.push(tmpParam.name + '=' + tmpParam.value);
-                tmpDesc.push('<span style="color: ' + serviceData.getRandomColor() + ';">' + tmpParam.name + '=' + tmpParam.value + '</span>');
+                tmp.push(tmpParam.name + '=' + (this.encodeURI ? tmpParam.value : encodeURIComponent(tmpParam.value)));
+
+                // random coloring query params
+                // tmpDesc.push('<span style="color: ' + serviceData.getRandomColor() + ';">' + tmpParam.name + '=' + tmpParam.value + '</span>');
+
+                // no coloring
+                tmpDesc.push(tmpParam.name + '=' + tmpParam.value);
             }
 
             var tmpString = '';
