@@ -1,3 +1,7 @@
+/* jslint node: true */
+"use strict";
+
+/* global queryParamsApp */
 queryParamsApp.factory('utilsService', function() {
 
     var serviceData = {

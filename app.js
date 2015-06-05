@@ -2,6 +2,9 @@
 * node.js API server
 **/
 
+/* jslint node: true */
+"use strict";
+
 // including Express.js module
 var express = require('express');
 var morgan = require('morgan');
