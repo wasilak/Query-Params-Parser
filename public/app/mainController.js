@@ -1,3 +1,7 @@
+/* jslint node: true */
+"use strict";
+
+/* global queryParamsApp */
 queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel', function($scope, $routeParams,urlModel) {
     var mainCtrl =this;
 

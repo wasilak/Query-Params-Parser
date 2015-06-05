@@ -1,6 +1,12 @@
 /**
 * URL model, handling all data related logic and using Utils service
 */
+
+/* jslint node: true */
+"use strict";
+
+/* global queryParamsApp */
+/* global URL */
 queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location', function($http, utilsService, $sce, $location) {
 
     var urlModel = {
@@ -61,7 +67,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
         saveToDB: function() {
           var me = this;
 
-          url = false;
+          var url = false;
           try {
             url = new URL(this.output.url);
           } catch(error) {

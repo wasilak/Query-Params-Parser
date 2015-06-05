@@ -1,3 +1,7 @@
+/* jslint node: true */
+"use strict";
+
+/* global queryParamsApp */
 queryParamsApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
