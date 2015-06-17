@@ -97,7 +97,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
 
                     me.hash = data.hash;
 
-                    var port = $location.port() != '80' ? ':' + $location.port() : '';
+                    var port = ($location.port() != '80' && $location.port() != '443') ? ':' + $location.port() : '';
                     me.modal.url = $location.protocol() + '://' + $location.host() + port + '/' + data.hash;
 
 //                    if('insert' === data.type) {
