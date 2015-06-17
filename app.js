@@ -13,7 +13,7 @@ var path = require('path');
 // load locallydb
 var locallydb = require('locallydb');
 
-// load the database (folder) in './mydb', will be created if doesn't exist 
+// load the database (folder) in './mydb', will be created if doesn't exist
 var db = new locallydb('./db');
 var collection = db.collection('urls');
 

@@ -25,7 +25,7 @@
                         <input type="text" class="form-control" ng-model="mainCtrl.urlModel.urlWithoutParams">
                     </div>
                 </form>
-                
+
                 <p>
                     Query params:
                 </p>
@@ -86,6 +86,25 @@
                     </div>
                 </form>
               </div>
+
+              <div id="modal_message" class="modal fade" tabindex="-1" data-backdrop="false" data-keyboard ="false">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" aria-hidden="true" ng-click="mainCtrl.urlModel.goToHashUrl()">×</button>
+                      <h4 class="modal-title text-primary">{{mainCtrl.urlModel.modal.header}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="text-muted text-center">{{mainCtrl.urlModel.modal.message}} <span class="label label-info" style="font-size: 1em;">{{mainCtrl.urlModel.modal.hash}}</span></h4>
+                        <p class="text-muted text-center">url: <a ng-click="mainCtrl.urlModel.goToHashUrl()" href="{{mainCtrl.urlModel.modal.url}}">{{mainCtrl.urlModel.modal.url}}</a></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-primary btn-flat" data-dismiss="modal" ng-click="mainCtrl.urlModel.goToHashUrl()">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <nav class="navbar navbar-default navbar-fixed-bottom" ng-show="mainCtrl.urlModel.output.url.length > 0">
                 <div class="container">
                   <div class="well" ng-show="mainCtrl.urlModel.output.url.length > 0">
@@ -93,7 +112,7 @@
                       <a href="{{mainCtrl.urlModel.output.url}}" target="_blank">
                         <span ng-bind-html="mainCtrl.urlModel.output.description"></span>
                       </a>
-                      <button type="button" class="btn btn-danger btn-xs btn-block1 btn-raised btn-material-indigo" ng-click="mainCtrl.urlModel.saveToDB()">
+                      <button type="button" class="btn btn-danger btn-xs btn-block1 btn-raised btn-material-indigo" ng-click="mainCtrl.urlModel.saveToDB()" data-toggle="modal" data-target="#modal_message">
                         <span ng-if="mainCtrl.urlModel.hash">update</span>
                         <span ng-if="!mainCtrl.urlModel.hash">save</span>
                       </button>

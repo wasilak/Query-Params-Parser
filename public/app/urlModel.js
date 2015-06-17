@@ -1,7 +1,7 @@
 /**
 * URL model, handling all data related logic and using Utils service
 */
-
+/*global $:false */
 /* jslint node: true */
 "use strict";
 
@@ -25,6 +25,13 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             'value': ''
         },
         encodeURI: true,
+
+        modal: {
+            header: 'Loading...',
+            message: '',
+            hash: '',
+            url: ''
+        },
 
         removeUrlParam: function(id) {
             this.queryParams.splice(id, 1);
@@ -64,6 +71,11 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             }
         },
 
+        goToHashUrl: function() {
+            $('#modal_message').modal('hide');
+            $location.path('/' + this.hash);
+        },
+
         saveToDB: function() {
           var me = this;
 
@@ -78,8 +90,22 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
               $http.post('/api/save/' + encodeURIComponent(url.href) + '/' + this.hash).success(function(data) {
                 console.log(data);
 
-                if (data.error === false && 'insert' === data.type) {
-                   $location.path('/' + data.hash);
+                if (data.error === false) {
+                    me.modal.header = data.message;
+                    me.modal.message = 'Unique hash of your URL:';
+                    me.modal.hash = data.hash;
+
+                    me.hash = data.hash;
+
+                    var port = $location.port() != '80' ? ':' + $location.port() : '';
+                    me.modal.url = $location.protocol() + '://' + $location.host() + port + '/' + data.hash;
+
+//                    if('insert' === data.type) {
+//                        me.goToHashUrl();
+//                    }
+                } else {
+
+                    me.modal.header = 'Something went wrong... :/';
                 }
               });
           }
