@@ -10,70 +10,89 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 
-// load locallydb
-var locallydb = require('locallydb');
+// load Mongoose - MongoDB access lib
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOLAB_URI);
 
-// load the database (folder) in './mydb', will be created if doesn't exist
-var db = new locallydb('./db');
-var collection = db.collection('urls');
+var urlModel = mongoose.model(
+    'url',
+    {
+        "url": String,
+        "created": Date,
+        "updated": Date
+    }
+);
 
 // YT like hash IDs
 var hashids = require("hashids"),
-hashids = new hashids("dsiajh@#@d7847$$%%6238kjdbicu", 6);
+hashids = new hashids("dsiajh@#@d7847$$%%6238kjdbicu", 12);
 
 var app = express();
 app.set('port', (process.env.PORT || 3000));
 
-// logging to console
 app.use(morgan('dev'));
 
 // path to static assets (CSS etc.)
 app.use(express.static('public'));
 
-// AngularJS views
-// app.use(express.static('public/app/views'));
-
 app.post('/api/save/:url/:hash', function(req, res) {
   var url = req.params.url;
   var hash = req.params.hash;
 
-  console.log(url, hash);
 
   if ('undefined' !== hash) {
-    console.log("update");
-    var decodedHashId = hashids.decode(hash);
-    decodedHashId = decodedHashId[0];
+    var decodedHashId = hashids.decodeHex(hash);
 
-    var data = collection.get(decodedHashId);
-
-    if (data) {
-      collection.update(decodedHashId, {url: url});
-
-      res.json({
-          error: false,
-          type: 'update',
-          message: 'update successfull',
-          hash: hashids.encode(data.cid)
-      });
-    } else {
-      res.json({
-          error: true,
-          type: 'update',
-          message: 'update failed. HashID does not exists...'
-      });
-    }
+    urlModel.findOne({ _id: decodedHashId }, function(err, urlToUpdate) {
+        if (err) {
+            res.json({
+                error: true,
+                message: 'hash not found'
+            });
+        } else {
+            urlToUpdate.url = url;
+            urlToUpdate.updated = new Date();
+            urlToUpdate.save(function(err) {
+                if (err) {
+                    res.json({
+                        error: true,
+                        message: 'update failed...'
+                    });
+                } else {
+                    res.json({
+                        error: false,
+                        type: 'update',
+                        message: 'update successfull',
+                        hash: hash
+                    });
+                }
+            });
+        }
+    });
   } else {
-    console.log("insert");
-    var newID = collection.insert({
-        url: url
+
+    var newUrl = new urlModel({
+        url: url,
+        created: new Date(),
+        updated: new Date()
     });
 
-    res.json({
-        error: false,
-        type: 'insert',
-        message: 'insert successfull',
-        hash: hashids.encode(newID)
+    newUrl.save(function(err) {
+        if (err) {
+            res.json({
+                error: true,
+                message: 'insert failed...'
+            });
+        } else {
+            res.json({
+                error: false,
+                type: 'insert',
+                message: 'insert successfull',
+                hash: hashids.encodeHex(newUrl._id)
+            });
+        }
     });
+
   }
 });
 
@@ -81,19 +100,19 @@ app.get('/api/get/:hash', function(req, res) {
 
     var hash = req.params.hash;
 
-    // here get data from DB etc.
-    // decoding HashID returns array, so we need first element
-    var decodedHashId = hashids.decode(hash);
-    var data = collection.get(decodedHashId[0]);
+    // here get data from DB, decoding HashID
+    var decodedHashId = hashids.decodeHex(hash);
 
-    if (data) {
-        res.json(data);
-    } else {
-        res.json({
-            error: true,
-            message: 'hash not found'
-        });
-    }
+    urlModel.findOne({ _id: decodedHashId }, function(err, data) {
+        if (err) {
+            res.json({
+                error: true,
+                message: 'hash not found'
+            });
+        } else {
+            res.json(data);
+        }
+    });
 });
 
 // catching all routes with single page AngularJS app.
@@ -107,5 +126,4 @@ var server = app.listen(app.get('port'), function() {
     var host = server.address().address;
     var port = server.address().port;
 
-    console.log('Listening on http://%s:%s', host, port);
 });
