@@ -38,6 +38,9 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
         },
 
         addUrlParam: function() {
+            if (undefined === this.queryParams) {
+                this.queryParams = [];
+            }
             if (this.newElement.name.length > 0) {
                 this.queryParams.push(this.newElement);
                 this.newElement = {
