@@ -16,7 +16,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             description: ''
         },
         hash: '',
-        rawUrl: new URL(''),
+        rawUrl: '',
         urlWithoutParams: '',
         queryParams: [],
         urlHash: '',
@@ -115,11 +115,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
         },
 
         setRawUrl: function() {
-            this.rawUrl = new URL('');
-            try {
-                this.rawUrl = new URL(this.input);
-            } catch (error) {
-            }
+            this.rawUrl = new URL(this.input);
 
             this.urlHash = '';
             if (this.rawUrl.hash && this.rawUrl.hash.length > 0) {

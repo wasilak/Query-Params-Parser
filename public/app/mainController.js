@@ -12,7 +12,11 @@ queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel
 
     // watching input field
     $scope.$watch('mainCtrl.urlModel.input', function() {
-        mainCtrl.urlModel.setRawUrl();
+        try {
+            mainCtrl.urlModel.setRawUrl();
+        } catch(e) {
+
+        }
     });
 
     // watching url/host field
