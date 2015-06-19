@@ -1,4 +1,4 @@
 public/assets/js/angularjs/*
 node_modules
-db/*
 .agignore
+/public/bower_components/
