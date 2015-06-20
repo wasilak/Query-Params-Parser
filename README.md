@@ -1,6 +1,8 @@
 # Query Params Parser
 MEAN stack app for parsing URL query params
 
+![](http://i.imgur.com/3FGaMtj.png)
+
 I created this application because I needed a simple way to analyze URLs and modify them, ie Their query params or hash (#) and generate new ready-to-use URL.
 
 I chose **MEAN** stack (**M**ongo **E**xpress **A**ngularJS **N**ode.js, not to mistake for http://mean.io/) because I believe that this set of technologies is already standard for modern web development, not to mention it's speed, ease of use, testability and the fact, that I really wanted to work with them :)
@@ -104,4 +106,4 @@ QPP_HASH_LENGTH=12
 - [x] deployment to Heroku
 - [x] using foreman
 - [ ] tests, tests, tests!
-- [ ] some kind of scheduler to clean URLs after fixed period of time
+- [ ] some kind of scheduler to clean URLs from DB after fixed period of time (expiration)
