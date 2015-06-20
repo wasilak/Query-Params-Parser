@@ -1,6 +1,9 @@
 {
-  "name": "Test",
-  "version": "0.0.2",
+  "name": "Query-Params-Parser",
+  "version": "0.0.5",
+  "description": "MEAN stack app for parsing URL query params",
+  "repository": "https://github.com/wasilak/Query-Params-Parser",
+  "license": "MIT",
   "main": "app.js",
   "scripts": {
     "postinstall": "node_modules/.bin/bower install"
@@ -11,13 +14,7 @@
   "dependencies": {
     "bower": "^1.4.1",
     "express": "^4.12.4",
-    "gulp": "*",
-    "gulp-livereload": "*",
-    "gulp-rename": "*",
-    "gulp-util": "*",
-    "gulp-watch": "*",
     "hashids": "^1.0.1",
-    "locallydb": "0.0.9",
     "map-stream": "*",
     "mongoose": "^4.0.5",
     "morgan": "^1.5.3"
@@ -27,6 +24,11 @@
     "karma": "^0.12.36",
     "karma-brackets": "^0.2.1",
     "karma-chrome-launcher": "^0.1.12",
-    "karma-jasmine": "^0.3.5"
+    "karma-jasmine": "^0.3.5",
+    "gulp": "*",
+    "gulp-livereload": "*",
+    "gulp-rename": "*",
+    "gulp-util": "*",
+    "gulp-watch": "*"
   }
 }

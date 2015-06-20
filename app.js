@@ -5,6 +5,16 @@
 /* jslint node: true */
 "use strict";
 
+// checking settings from ENV vars
+if (undefined === process.env.QPP_HASH_SALT) {
+    console.log("Salt for HASH IDs is not defined. Please set QPP_HASH_SALT=xxx");
+    process.exit(1);
+}
+if (undefined === process.env.QPP_MONGO_URI) {
+    console.log("Database connection is not defined. Please set QPP_MONGO_URI=mongodb://username:password@host/collection");
+    process.exit(1);
+}
+
 // including Express.js module
 var express = require('express');
 var morgan = require('morgan');
@@ -12,7 +22,7 @@ var path = require('path');
 
 // load Mongoose - MongoDB access lib
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.QPP_MONGO_URI);
 
 var urlModel = mongoose.model(
     'url',
@@ -25,10 +35,10 @@ var urlModel = mongoose.model(
 
 // YT like hash IDs
 var hashids = require("hashids"),
-hashids = new hashids("dsiajh@#@d7847$$%%6238kjdbicu", 12);
+hashids = new hashids(process.env.QPP_HASH_SALT, (process.env.QPP_HASH_LENGTH || 12));
 
 var app = express();
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.QPP_PORT || 5000));
 
 app.use(morgan('dev'));
 

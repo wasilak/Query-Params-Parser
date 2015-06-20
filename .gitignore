@@ -2,3 +2,4 @@ public/assets/js/angularjs/*
 node_modules
 .agignore
 /public/bower_components/
+/.env
