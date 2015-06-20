@@ -15,7 +15,7 @@ queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel
         try {
             mainCtrl.urlModel.setRawUrl();
         } catch(e) {
-
+            console.log(e);
         }
     });
 
