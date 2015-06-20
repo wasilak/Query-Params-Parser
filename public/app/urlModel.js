@@ -120,7 +120,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             try {
                 this.rawUrl = new URL(this.input);
             } catch(e) {
-                console.log(e);
+//                console.log(e);
             }
 
             if ("URL" !== this.rawUrl.constructor.name) {
