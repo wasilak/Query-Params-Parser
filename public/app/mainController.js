@@ -3,7 +3,7 @@
 
 /* global queryParamsApp */
 queryParamsApp.controller("MainController", ['$scope', '$routeParams', 'urlModel', function($scope, $routeParams,urlModel) {
-    var mainCtrl =this;
+    var mainCtrl = this;
 
     mainCtrl.urlModel = urlModel;
 

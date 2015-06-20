@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "postinstall": "node_modules/.bin/bower install"
   },
   "engines": {
     "node": "0.12.2"
@@ -22,7 +22,11 @@
     "mongoose": "^4.0.5",
     "morgan": "^1.5.3"
   },
-  "scripts": {
-    "postinstall": "node_modules/.bin/bower install"
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.36",
+    "karma-brackets": "^0.2.1",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5"
   }
 }
