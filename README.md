@@ -38,7 +38,7 @@ What you will need (to do) in order to install and run this application:
     > `NPM` will install `bower.js` and it will in turn install all frontend JS and CSS dependencies app needs using `postinstall` hook in `scripts`.
 3. You need to tell app how to connect to MongoDB by setting enviroment variable named `QPP_MONGO_URI`.
 
-  > Heroku will do this for you, if you use MongoLab addon
+  > Heroku will do this for you, if you use i.e. MongoLab addon, but all they can provide is `MONGOLAB_URI` env variable. What you need to do is copy it's conents into new env variable named `QPP_MONGO_URI`.
 
   Locally you can just export this variable before runnning an app with something like this:
 
@@ -56,7 +56,7 @@ What you will need (to do) in order to install and run this application:
   export QPP_HASH_SALT=fiufgnc9oq23rmxq89rypq380fu,xq
   ```
 4. By default app will run on port `5000`, but you can override this by setting `QPP_PORT` env variable.
-  > Again, Heroku will do this for you.
+  > Again, Heroku will do this for you, but keep in mind that `QPP_PORT` takes precenedce over `PORT`, which Heroku uses, so in that case you might want to omit it and stick with `PORT` provided by Heroku.
 
   ```bash
   export QPP_PORT=5000

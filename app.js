@@ -38,7 +38,17 @@ var hashids = require("hashids"),
 hashids = new hashids(process.env.QPP_HASH_SALT, (process.env.QPP_HASH_LENGTH || 12));
 
 var app = express();
-app.set('port', (process.env.QPP_PORT || 5000));
+
+var appPort = 0;
+if (process.env.QPP_PORT) {
+    appPort = process.env.QPP_PORT;
+} else if(process.env.PORT) {
+    appPort = process.env.PORT;
+} else {
+    appPort = 5000;
+}
+console.log(appPort);
+app.set('port', appPort);
 
 app.use(morgan('dev'));
 
