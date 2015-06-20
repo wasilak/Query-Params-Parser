@@ -1,6 +1,7 @@
 # Query Params Parser
 MEAN stack app for parsing URL query params
 
+![](https://img.shields.io/badge/IE-not%20supported-red.svg)
 ![](http://i.imgur.com/3FGaMtj.png)
 
 I created this application because I needed a simple way to analyze URLs and modify them, ie Their query params or hash (#) and generate new ready-to-use URL.
