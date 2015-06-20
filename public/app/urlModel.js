@@ -115,7 +115,17 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
         },
 
         setRawUrl: function() {
-            this.rawUrl = new URL(this.input);
+            this.rawUrl = {};
+
+            try {
+                this.rawUrl = new URL(this.input);
+            } catch(e) {
+                console.log(e);
+            }
+
+            if ("URL" !== this.rawUrl.constructor.name) {
+                return;
+            }
 
             this.urlHash = '';
             if (this.rawUrl.hash && this.rawUrl.hash.length > 0) {
