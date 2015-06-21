@@ -1,6 +1,7 @@
 # Query Params Parser
 MEAN stack app for parsing URL query params
 
+[![Code Climate](https://codeclimate.com/github/wasilak/Query-Params-Parser/badges/gpa.svg)](https://codeclimate.com/github/wasilak/Query-Params-Parser)
 ![](https://img.shields.io/badge/IE-not%20supported-red.svg)
 ![](http://i.imgur.com/3FGaMtj.png)
 
