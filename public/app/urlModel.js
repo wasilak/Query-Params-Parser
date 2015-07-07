@@ -120,12 +120,13 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
             try {
                 this.rawUrl = new URL(this.input);
             } catch(e) {
-//                console.log(e);
+              this.rawUrl = new URL('http://');
+              console.log(e);
             }
 
-            if ("URL" !== this.rawUrl.constructor.name) {
-                return;
-            }
+            // if ("URL" !== this.rawUrl.constructor.name) {
+            //     return;
+            // }
 
             this.urlHash = '';
             if (this.rawUrl.hash && this.rawUrl.hash.length > 0) {
