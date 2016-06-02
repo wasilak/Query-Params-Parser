@@ -3,3 +3,4 @@ node_modules
 .agignore
 /public/bower_components/
 /.env
+tmp

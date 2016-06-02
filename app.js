@@ -56,7 +56,7 @@ app.use(morgan('dev'));
 app.use(express.static('public'));
 
 app.post('/api/save/:url/:hash', function(req, res) {
-  var url = req.params.url;
+  var url = req.params.url.split('||').join('/');
   var hash = req.params.hash;
 
 

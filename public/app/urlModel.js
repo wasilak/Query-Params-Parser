@@ -90,7 +90,7 @@ queryParamsApp.factory('urlModel', ['$http', 'utilsService', '$sce', '$location'
           }
 
           if (url) {
-              $http.post('/api/save/' + encodeURIComponent(url.href) + '/' + this.hash).success(function(data) {
+              $http.post('/api/save/' + encodeURIComponent(url.href.split('/').join('||'))  + '/' + this.hash).success(function(data) {
                 console.log(data);
 
                 if (data.error === false) {
